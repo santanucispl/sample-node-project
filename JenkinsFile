@@ -34,9 +34,11 @@ pipeline{
             }           
         }  
         stage('Push Image to Docker Hub') {         
-            steps{                            
-                sh 'sudo docker push shan8836/node_new_app:$BUILD_NUMBER'                 
-                echo 'Push Image Completed'       
+            steps{       
+                 withCredentials([usernamePassword(credentialsId: 'dockercred', passwordVariable: 'dockercredPassword', usernameVariable: 'dockercredUser')]) {                     
+                    sh 'sudo docker push shan8836/node_new_app:$BUILD_NUMBER'                 
+                    echo 'Push Image Completed'    
+                 }   
             }           
         }   
 
