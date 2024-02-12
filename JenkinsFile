@@ -32,6 +32,13 @@ pipeline{
                         echo "docker image pushed"
                 }  
             }           
+        } 
+        stage('docker image clean') {         
+            steps{   
+                        sh 'docker rmi shan8836/node_new_app'
+                        echo "docker image cleaned"
+                
+            }           
         }   
         stage('docker pull') {         
             steps{   
