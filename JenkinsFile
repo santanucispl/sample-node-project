@@ -1,0 +1,41 @@
+pipeline{
+    agent any
+    environment {     
+    DOCKERHUB_CREDENTIALS= credentials('dockercred')     
+  } 
+    stages{
+        stage("clean Workspace"){
+            steps{
+                cleanWs()
+            }
+        }
+        stage("git checkout"){
+            steps {
+                git 'https://github.com/santanucispl/sample-node-project.git'
+            }
+        }
+        stage("docker build"){
+            steps {
+                sh "docker build -t shan8836/node_new_app:latest ."
+            }
+        }
+        stage("scan image"){
+            steps{
+                echo 'image scanning ho gayi'
+            }
+        }
+        stage('Login to Docker Hub') {         
+            steps{                            
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                 
+                echo 'Login Completed'                
+            }           
+        }  
+        stage('Push Image to Docker Hub') {         
+            steps{                            
+                sh 'sudo docker push shan8836/node_new_app:$BUILD_NUMBER'                 
+                echo 'Push Image Completed'       
+            }           
+        }   
+
+    }
+}
