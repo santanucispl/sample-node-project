@@ -26,7 +26,10 @@ pipeline{
         }
         stage('Login to Docker Hub') {         
             steps{                            
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                 
+                    withCredentials([usernamePassword(credentialsId: 'dockercred', passwordVariable: 'dockercredPassword', usernameVariable: 'dockercredUser')]) {
+                        sh "docker login -u ${env.dockercredUser} -p ${env.dockercredPassword}"
+                        sh 'docker push shan8836/node_new_app:latest'
+                }      
                 echo 'Login Completed'                
             }           
         }  
