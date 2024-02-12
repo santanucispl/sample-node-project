@@ -33,6 +33,19 @@ pipeline{
                 }  
             }           
         }   
-
+        stage('docker pull') {         
+            steps{   
+                        sh 'docker pull shan8836/node_new_app:latest'
+                        echo "docker image pulled"
+                
+            }           
+        } 
+        stage('docker run') {         
+            steps{   
+                        sh 'docker run -d shan8836/node_new_app:latest --name newProj -p 3005:3005'
+                        echo "docker image run"
+                
+            }           
+        } 
     }
 }
